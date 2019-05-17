@@ -13,13 +13,6 @@ jobs:
           image_name: ${CIRCLE_PROJECT_REPONAME}:policy-fail
           policy_failure: True
           timeout: '500'
-      - run:
-          name: push container
-          command: |
-            export IMAGE_NAME='btodhunter/circleci-demo:policy-fail'
-            docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
-            docker tag "${CIRCLE_PROJECT_REPONAME}:policy-fail" "$IMAGE_NAME"
-            docker push "$IMAGE_NAME"
 
   custom_policy_pass:
     executor: anchore/anchore_engine
@@ -32,13 +25,6 @@ jobs:
           image_name: ${CIRCLE_PROJECT_REPONAME}:policy-pass
           policy_failure: True
           timeout: '500'
-      - run:
-          name: push container
-          command: |
-            export IMAGE_NAME='btodhunter/circleci-demo:policy-pass'
-            docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
-            docker tag "${CIRCLE_PROJECT_REPONAME}:policy-pass" "$IMAGE_NAME"
-            docker push "$IMAGE_NAME"
 
 workflows:
   scan_image:
