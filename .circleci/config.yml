@@ -1,0 +1,47 @@
+version: 2.1
+orbs:
+  anchore: anchore/anchore-engine@1.1.0
+jobs:
+  custom_policy_fail:
+    executor: anchore/anchore_engine
+    steps:
+      - checkout
+      - run:
+          name: build container
+          command: docker build -t "${CIRCLE_PROJECT_REPONAME}:policy-fail" -f node_critical_fail/Dockerfile node_critical_fail/
+      - anchore/analyze_local_image:
+          image_name: ${CIRCLE_PROJECT_REPONAME}:policy-fail
+          policy_failure: True
+          timeout: '500'
+      - run:
+          name: push container
+          command: |
+            export IMAGE_NAME='btodhunter/circleci-demo:policy-fail'
+            docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+            docker tag "${CIRCLE_PROJECT_REPONAME}:policy-fail" "$IMAGE_NAME"
+            docker push "$IMAGE_NAME"
+
+  custom_policy_pass:
+    executor: anchore/anchore_engine
+    steps:
+      - checkout
+      - run:
+          name: build container
+          command: docker build -t "${CIRCLE_PROJECT_REPONAME}:policy-pass" -f node_critical_pass/Dockerfile node_critical_pass/
+      - anchore/analyze_local_image:
+          image_name: ${CIRCLE_PROJECT_REPONAME}:policy-pass
+          policy_failure: True
+          timeout: '500'
+      - run:
+          name: push container
+          command: |
+            export IMAGE_NAME='btodhunter/circleci-demo:policy-pass'
+            docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+            docker tag "${CIRCLE_PROJECT_REPONAME}:policy-pass" "$IMAGE_NAME"
+            docker push "$IMAGE_NAME"
+
+workflows:
+  scan_image:
+    jobs:
+      - custom_policy_fail
+      - custom_policy_pass
