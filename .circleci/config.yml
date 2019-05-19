@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: build container
-          command: docker build -t "${CIRCLE_PROJECT_REPONAME}:policy-fail" -f node_critical_fail/Dockerfile node_critical_fail/
+          command: docker build -t "${CIRCLE_PROJECT_REPONAME}:policy-fail" -f node_critical_fail/Dockerfile .
       - anchore/analyze_local_image:
           image_name: ${CIRCLE_PROJECT_REPONAME}:policy-fail
           policy_failure: True
