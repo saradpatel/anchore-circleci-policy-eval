@@ -1,33 +1,15 @@
 version: 2.1
-orbs:
-  anchore: anchore/anchore-engine@1.1.0
 jobs:
-  custom_policy_fail:
-    executor: anchore/anchore_engine
-    steps:
-      - checkout
-      - run:
-          name: build container
-          command: docker build -t "${CIRCLE_PROJECT_REPONAME}:policy-fail" -f node_critical_fail/Dockerfile .
-      - anchore/analyze_local_image:
-          image_name: ${CIRCLE_PROJECT_REPONAME}:policy-fail
-          policy_failure: True
-          timeout: '500'
-
-  custom_policy_pass:
-    executor: anchore/anchore_engine
-    steps:
-      - checkout
-      - run:
-          name: build container
-          command: docker build -t "${CIRCLE_PROJECT_REPONAME}:policy-pass" -f node_critical_pass/Dockerfile node_critical_pass/
-      - anchore/analyze_local_image:
-          image_name: ${CIRCLE_PROJECT_REPONAME}:policy-pass
-          policy_failure: True
-          timeout: '500'
+   scan:
+      docker:
+          - image: circleci/python:latest
+      working_directory: ~/repo
+      steps:
+          - checkout
+          - run: sudo pip install trufflehog
+          - run: trufflehog --max_depth 1 ~/repo
 
 workflows:
   scan_image:
     jobs:
-      - custom_policy_fail
-      - custom_policy_pass
+      - scan
