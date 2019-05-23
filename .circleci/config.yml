@@ -8,7 +8,7 @@ jobs:
           - checkout
           - run: sudo pip install trufflehog
           - run: trufflehog --help
-          - run: trufflehog --max_depth 3 --json --regex ~/repo
+          - run: trufflehog --regex ~/repo
 
 workflows:
   scan_image:
