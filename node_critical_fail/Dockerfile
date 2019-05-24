@@ -7,5 +7,4 @@ COPY ./app/ /home/node/app/
 
 # HEALTHCHECK CMD curl --fail http://localhost:8081/ || exit 1
 EXPOSE 8081 22
-
 CMD node /home/node/app/server.js
