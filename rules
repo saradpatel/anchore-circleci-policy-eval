@@ -19,5 +19,5 @@
     "Google Gmail OAuth": "[0-9]+-[0-9A-Za-z_]{32}\\.apps\\.googleusercontent\\.com",
     "Google OAuth Access Token": "ya29\\.[0-9A-Za-z\\-_]+",
     "Google YouTube API Key": "AIza[0-9A-Za-z\\-_]{35}",
-    "Google YouTube OAuth": "[0-9]+-[0-9A-Za-z_]{32}\\.apps\\.googleusercontent\\.com",
+    "Google YouTube OAuth": "[0-9]+-[0-9A-Za-z_]{32}\\.apps\\.googleusercontent\\.com"
 }
