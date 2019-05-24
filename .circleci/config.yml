@@ -8,7 +8,7 @@ jobs:
           - checkout
           - run: sudo pip install trufflehog
           - run: trufflehog --help
-          - run: trufflehog  ~/repo
+          - run: trufflehog  --rules ~/repo/rules ~/repo
 
 workflows:
   scan_image:
